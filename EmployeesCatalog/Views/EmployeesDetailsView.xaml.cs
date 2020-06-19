@@ -18,6 +18,7 @@ namespace EmployeesCatalog.Views
             InitializeComponent();
             _employeeViewModel = new ViewModels.EmployeeViewModel();
             this.DataContext = _employeeViewModel;
+            _employeeViewModel.NewEmployee = new Employee();
         }
         
         private void EmployeeDetailsDataGrid_Loaded(object sender, RoutedEventArgs e)
@@ -43,7 +44,6 @@ namespace EmployeesCatalog.Views
         public void handleAddEmployee(object sender, RoutedEventArgs eventArgs)
         {
             addEmployeePopup.IsOpen = true;
-            _employeeViewModel.NewEmployee = new Employee();
         }
 
         private void AddNewEmployee(object sender, RoutedEventArgs eventArgs)
@@ -51,16 +51,12 @@ namespace EmployeesCatalog.Views
             _employeeViewModel.AddNewEmployee();
             addEmployeePopup.IsOpen = false;
             _employeeViewModel.NewEmployee = null;
-
-        }
-        private void AddNewEmployee()
-        {
-            _employeeViewModel.AddNewEmployee();
         }
 
         private void SaveChanges(object sender, RoutedEventArgs eventArgs)
         {
             _employeeViewModel.CommitChanges();
+            editRowPopup.IsOpen = false;
         }
         private void ClosePopup(object sender, RoutedEventArgs eventArgs)
         {

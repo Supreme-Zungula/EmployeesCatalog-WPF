@@ -70,7 +70,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Popup Name="editRowPopup" Width="350" Margin="0, 15, 0, 0" >
+        <Popup Name="editRowPopup" Width="350" Margin="0, 15, 0, 0"
+               PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
+               Placement="Center">
             <Border>
                 <StackPanel>
                     <Label Content="Name:" Background="White" />
@@ -78,8 +80,8 @@
                     <Label Content="Surname:" Background="White" />
                     <TextBox Text="{Binding Path=SelectedGridItem.Surname}" />
                     <Label Content="Gender:" Background="White" />
-                    <ComboBox  SelectedItem="{Binding Path=SelectedGridItem.Gender, Mode=OneWayToSource}" 
-                               ItemsSource="{Binding Source={StaticResource genderEnum}}" />
+                    <ComboBox ItemsSource="{Binding Source={StaticResource genderEnum}}"
+                              SelectedItem="{Binding Path=SelectedGridItem.Gender}"  />
                     <Label Content="Date of Birth:" Background="White" />
                     <TextBox Text="{Binding Path=SelectedGridItem.DateOfBirth}" />
                     <Label Content="Email:" Background="White" />
@@ -95,7 +97,9 @@
             </Border>
         </Popup>
         
-        <Popup Name="addEmployeePopup" Width="350" Margin="0, 15, 0, 0" >
+        <Popup Name="addEmployeePopup" Width="350" Margin="0, 15, 0, 0" 
+               PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
+               Placement="Center">
             <Border>
                 <StackPanel>
                     <Label Content="Name:" Background="White" />
