@@ -10,6 +10,5 @@ namespace EmployeesCatalog.Enums
     {
         Male,
         Female,
-        Unknown
     }
 }

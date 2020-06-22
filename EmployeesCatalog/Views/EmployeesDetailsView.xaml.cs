@@ -20,18 +20,21 @@ namespace EmployeesCatalog.Views
             this.DataContext = _employeeViewModel;
             _employeeViewModel.NewEmployee = new Employee();
         }
-        
+
+   
         private void EmployeeDetailsDataGrid_Loaded(object sender, RoutedEventArgs e)
         {
             EmployeeDetailsDataGrid.ItemsSource = _employeeViewModel.EmployeesCollection;
+            SetComboBoxBackground();
         }
-
-        public void handleEditEmployees(object sender, RoutedEventArgs eventArgs)
+        private void handleEditEmployees(object sender, RoutedEventArgs eventArgs)
         {
             try
             {
                 var gridRows = GetDataGridRows(EmployeeDetailsDataGrid);
                 DataGridRow selectedRow = GetSelectedRow(gridRows);
+                addEmployeePopup.IsOpen = false;
+
                 if (selectedRow == null)
                 {
                     MessageBox.Show("Select a row to edit.", "Edit info", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -41,11 +44,10 @@ namespace EmployeesCatalog.Views
             }
             catch { }
         }
-        public void handleAddEmployee(object sender, RoutedEventArgs eventArgs)
+        private void handleAddEmployee(object sender, RoutedEventArgs eventArgs)
         {
             addEmployeePopup.IsOpen = true;
         }
-
         private void AddNewEmployee(object sender, RoutedEventArgs eventArgs)
         {
             _employeeViewModel.AddNewEmployee();
@@ -77,6 +79,18 @@ namespace EmployeesCatalog.Views
             {
                 addEmployeePopup.IsOpen = false;
                 editRowPopup.IsOpen = true;
+            }
+        }
+
+        private void SetComboBoxBackground()
+        {
+            IEnumerable<DataGridRow> gridRows = GetDataGridRows(EmployeeDetailsDataGrid);
+            if (gridRows != null)
+            {
+                foreach (DataGridRow single_row in gridRows)
+                {
+                    Console.WriteLine(single_row.Item);
+                }
             }
         }
 

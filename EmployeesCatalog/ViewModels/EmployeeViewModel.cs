@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using EmployeesCatalog.Models;
 using EmployeesCatalog.Enums;
@@ -14,7 +13,6 @@ namespace EmployeesCatalog.ViewModels
         {
             LoadEmployees();
             DeleteEmployeeCommand = new CustomICommand(RemoveEmployee, IsItemSelected);
-            
         }
 
         public ObservableCollection<Employee> EmployeesCollection
@@ -33,7 +31,6 @@ namespace EmployeesCatalog.ViewModels
             get;
             set;
         }
-
 
         public void CommitChanges()
         {
@@ -64,6 +61,7 @@ namespace EmployeesCatalog.ViewModels
                 EmployeesCollection.Add(NewEmployee);
             NewEmployee = null;
         }
+        
         private Employee _selectedGridItem;
         public Employee SelectedGridItem
         {
@@ -122,6 +120,5 @@ namespace EmployeesCatalog.ViewModels
 
             this.EmployeesCollection = employees;
         }
-
     }
 }
