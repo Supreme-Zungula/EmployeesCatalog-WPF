@@ -6,6 +6,7 @@
              xmlns:core="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:EmployeesCatalog"
              xmlns:models="clr-namespace:EmployeesCatalog.Models"
+             xmlns:views="clr-namespace:EmployeesCatalog.Views"
              xmlns:enums="clr-namespace:EmployeesCatalog.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -58,15 +59,16 @@
 
         <DataGrid Grid.Row ="0" Name="EmployeeDetailsDataGrid" IsReadOnly="True"
                   Loaded="EmployeeDetailsDataGrid_Loaded" AutoGenerateColumns="False"
-                  SelectedItem="{Binding Path=SelectedGridItem, Mode=TwoWay}" >
-                  <!--RowDetailsTemplate="{Binding Source={StaticResource EmployeeDetailsTemplate}}"-->
+                  SelectedItem="{Binding Path=SelectedGridItem, Mode=TwoWay}" 
+                  RowDetailsTemplate="{Binding Source={StaticResource EmployeeDetailsTemplate}}">
+                  
             
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Name:" Width="*" Binding="{Binding Name}"/>
                 <DataGridTextColumn IsReadOnly="False" Header="Surname:" Width="*" Binding="{Binding Surname, Mode=TwoWay}"/>
                 <DataGridComboBoxColumn IsReadOnly="False" x:Name="GenderComboBox" Header="Gender:" SelectedItemBinding="{Binding Gender}" 
                                         Width="100"  ItemsSource="{Binding Source={StaticResource genderEnum}}" 
-                                        CellStyle="{StaticResource CellBackgroundColor}"/>
+                                        CellStyle="{StaticResource CellBackgroundColor}" />
                 <DataGridTextColumn IsReadOnly="False" Header="Email:" Width="*" Binding="{Binding Email, Mode=TwoWay}"/>
                 <DataGridTextColumn IsReadOnly="False" Header="Date of birth:" Width="*" Binding="{Binding DateOfBirth, Mode=TwoWay}"/>
                 <DataGridTextColumn IsReadOnly="False" Header="Home Address" Width="*" Binding="{Binding HomeAddress, Mode=TwoWay}"/>
@@ -80,34 +82,11 @@
         </DataGrid>
             
         <!--Edit Employee details popup-->
-        <Popup Name="editRowPopup" Width="350"
-               PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
-               Placement="Center">
-            <Border>
-                <StackPanel>
-                    <Label Content="Name:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Name}" IsEnabled="{Binding Path=EditingIsEnabled}"/>
-                    <Label Content="Surname:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Surname}" />
-                    <Label Content="Gender:" Background="White" Style="{StaticResource generalLabelStyle}"/>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource genderEnum}}"
-                              SelectedItem="{Binding Path=SelectedGridItem.Gender}"  />
-                    <Label Content="Date of Birth:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.DateOfBirth}" />
-                    <Label Content="Email:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Email}" />
-                    <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}" />
-                    <TextBox Text="{Binding Path=SelectedGridItem.HomeAddress}" />
-
-                    <StackPanel Orientation="Horizontal" Background="Wheat">
-                        <Button Content="Save" Click="SaveChanges" Style="{StaticResource generalButtonStyle}"/>
-                        <Button Content="Close" Click="ClosePopup" Style="{StaticResource generalButtonStyle}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-        </Popup>
-        
+        <views:EditEmployeeDetailsPopup x:Name="EditEmployeeDetailsPopupControl" />
+       
         <!--Add new Employee popup-->
+        <!--<views:AddEmployeePopup x:Name="AddEmployeePopupControl" />-->
+        
         <Popup Name="addEmployeePopup" Width="350" Margin="0, 15, 0, 0" 
                PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
                Placement="Center">

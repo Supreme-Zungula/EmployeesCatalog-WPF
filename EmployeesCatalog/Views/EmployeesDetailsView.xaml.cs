@@ -33,14 +33,14 @@ namespace EmployeesCatalog.Views
             {
                 var gridRows = GetDataGridRows(EmployeeDetailsDataGrid);
                 DataGridRow selectedRow = GetSelectedRow(gridRows);
-                addEmployeePopup.IsOpen = false;
 
-                if (selectedRow == null)
-                {
+                if (selectedRow == null) {
                     MessageBox.Show("Select a row to edit.", "Edit info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                else
-                    editRowPopup.IsOpen = true;
+                else {
+                    EditEmployeeDetailsPopupControl.editRowPopup.IsOpen = true;
+                    EditEmployeeDetailsPopupControl.DataContext = _employeeViewModel;
+                }
             }
             catch { }
         }
@@ -48,39 +48,39 @@ namespace EmployeesCatalog.Views
         {
             addEmployeePopup.IsOpen = true;
         }
-        private void AddNewEmployee(object sender, RoutedEventArgs eventArgs)
+        private void   AddNewEmployee(object sender, RoutedEventArgs eventArgs)
         {
-            _employeeViewModel.AddNewEmployee();
             addEmployeePopup.IsOpen = false;
+            _employeeViewModel.AddNewEmployee();
             _employeeViewModel.NewEmployee = null;
         }
 
-        private void SaveChanges(object sender, RoutedEventArgs eventArgs)
-        {
-            _employeeViewModel.CommitChanges();
-            editRowPopup.IsOpen = false;
-        }
+        //private void SaveChanges(object sender, RoutedEventArgs eventArgs)
+        //{
+        //    _employeeViewModel.CommitChanges();
+        //    editRowPopup.IsOpen = false;
+        //}
         private void ClosePopup(object sender, RoutedEventArgs eventArgs)
         {
-            if (editRowPopup.IsOpen == true)
-                editRowPopup.IsOpen = false;
+            //if (editRowPopup.IsOpen == true)
+            //    editRowPopup.IsOpen = false;
             if (addEmployeePopup.IsOpen == true)
                 addEmployeePopup.IsOpen = false;
         }
 
-        private void DisplayPopup()
-        {
-            if (editRowPopup.IsOpen == true)
-            {
-                editRowPopup.IsOpen = false;
-                addEmployeePopup.IsOpen = true;
-            }
-            else if (addEmployeePopup.IsOpen == true)
-            {
-                addEmployeePopup.IsOpen = false;
-                editRowPopup.IsOpen = true;
-            }
-        }
+        //private void DisplayPopup()
+        //{
+        //    if (editRowPopup.IsOpen == true)
+        //    {
+        //        editRowPopup.IsOpen = false;
+        //        addEmployeePopup.IsOpen = true;
+        //    }
+        //    else if (addEmployeePopup.IsOpen == true)
+        //    {
+        //        addEmployeePopup.IsOpen = false;
+        //        editRowPopup.IsOpen = true;
+        //    }
+        //}
 
         private void SetComboBoxBackground()
         {

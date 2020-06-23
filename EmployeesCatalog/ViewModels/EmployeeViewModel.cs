@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using EmployeesCatalog.Models;
 using EmployeesCatalog.Enums;
 using EmployeesCatalog.UtilityClasses;
+using System.Windows;
 
 namespace EmployeesCatalog.ViewModels
 {
@@ -22,11 +23,6 @@ namespace EmployeesCatalog.ViewModels
         }
 
         public CustomICommand DeleteEmployeeCommand
-        {
-            get;
-            set;
-        }
-        public CustomICommand EditEmployeeCommand
         {
             get;
             set;

@@ -92,6 +92,12 @@
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="UtilityClasses\CustomICommand.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
+    <Compile Include="Views\AddEmployeePopup.xaml.cs">
+      <DependentUpon>AddEmployeePopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditEmployeeDetailsPopup.xaml.cs">
+      <DependentUpon>EditEmployeeDetailsPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EmployeesDetailsView.xaml.cs">
       <DependentUpon>EmployeesDetailsView.xaml</DependentUpon>
     </Compile>
@@ -108,6 +114,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Styles\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddEmployeePopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditEmployeeDetailsPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
