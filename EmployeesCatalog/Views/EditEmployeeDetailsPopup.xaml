@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:core="clr-namespace:System;assembly=mscorlib"
-             xmlns:local="clr-namespace:EmployeesCatalog.Views"
              xmlns:enums="clr-namespace:EmployeesCatalog.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -18,9 +17,7 @@
     </UserControl.Resources>
     
     <Grid>
-        <Popup Name="editRowPopup" Width="350"
-               PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
-               Placement="Center">
+        <Popup Name="editRowPopup" Width="350" Placement="Center">
             <Border>
                 <StackPanel>
                     <Label Content="Name:" Style="{StaticResource generalLabelStyle}"/>
@@ -31,7 +28,7 @@
                     <ComboBox ItemsSource="{Binding Source={StaticResource genderEnum}}"
                               SelectedItem="{Binding Path=SelectedGridItem.Gender}"  />
                     <Label Content="Date of Birth:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.DateOfBirth}" />
+                    <DatePicker SelectedDate="{Binding Path=SelectedGridItem.DateOfBirth}" />
                     <Label Content="Email:" Style="{StaticResource generalLabelStyle}"/>
                     <TextBox Text="{Binding Path=SelectedGridItem.Email}" />
                     <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}" />

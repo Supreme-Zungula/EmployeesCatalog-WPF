@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:core="clr-namespace:System;assembly=mscorlib"
+             xmlns:common="clr-namespace:EmployeesCatalog.Common"
              xmlns:local="clr-namespace:EmployeesCatalog"
              xmlns:models="clr-namespace:EmployeesCatalog.Models"
              xmlns:views="clr-namespace:EmployeesCatalog.Views"
+             xmlns:viewModels="clr-namespace:EmployeesCatalog.ViewModels"
              xmlns:enums="clr-namespace:EmployeesCatalog.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -48,7 +50,14 @@
                 <x:Type TypeName="enums:GenderEnum" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-        
+
+        <ControlTemplate x:Key="validationErrorTemplate">
+            <StackPanel>
+                <AdornedElementPlaceholder />
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" />
+            </StackPanel>
+        </ControlTemplate>
+        <viewModels:EmployeeViewModel x:Key="EmployeeViewModel" />
     </UserControl.Resources>
 
     <Grid ShowGridLines="False">
@@ -62,7 +71,6 @@
                   SelectedItem="{Binding Path=SelectedGridItem, Mode=TwoWay}" 
                   RowDetailsTemplate="{Binding Source={StaticResource EmployeeDetailsTemplate}}">
                   
-            
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Name:" Width="*" Binding="{Binding Name}"/>
                 <DataGridTextColumn IsReadOnly="False" Header="Surname:" Width="*" Binding="{Binding Surname, Mode=TwoWay}"/>
@@ -70,8 +78,8 @@
                                         Width="100"  ItemsSource="{Binding Source={StaticResource genderEnum}}" 
                                         CellStyle="{StaticResource CellBackgroundColor}" />
                 <DataGridTextColumn IsReadOnly="False" Header="Email:" Width="*" Binding="{Binding Email, Mode=TwoWay}"/>
-                <DataGridTextColumn IsReadOnly="False" Header="Date of birth:" Width="*" Binding="{Binding DateOfBirth, Mode=TwoWay}"/>
-                <DataGridTextColumn IsReadOnly="False" Header="Home Address" Width="*" Binding="{Binding HomeAddress, Mode=TwoWay}"/>
+                <!--<DataGridTextColumn IsReadOnly="False" Header="Date of birth:" Width="*" Binding="{Binding DateOfBirth, Mode=TwoWay}"/>
+                <DataGridTextColumn IsReadOnly="False" Header="Home Address" Width="*" Binding="{Binding HomeAddress, Mode=TwoWay}"/>-->
             </DataGrid.Columns>
 
             <DataGrid.ContextMenu>
@@ -85,29 +93,85 @@
         <views:EditEmployeeDetailsPopup x:Name="EditEmployeeDetailsPopupControl" />
        
         <!--Add new Employee popup-->
-        <!--<views:AddEmployeePopup x:Name="AddEmployeePopupControl" />-->
         
         <Popup Name="addEmployeePopup" Width="350" Margin="0, 15, 0, 0" 
-               PlacementTarget="{Binding ElementName=EmployeeDetailsDataGrid}"
                Placement="Center">
             <Border>
                 <StackPanel>
-                    <Label Content="Name:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=NewEmployee.Name}" />
+                    <Label Content="Name:" Style="{StaticResource generalLabelStyle}" x:Name="nameTextBox"/>
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                        <TextBox.Text>
+                            <Binding Path="NewEmployee.Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule ValidatesOnTargetUpdated="True"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
                     <Label Content="Surname:" Style="{StaticResource generalLabelStyle}" />
-                    <TextBox Text="{Binding Path=NewEmployee.Surname}" />
-                    <Label Content="Gender:" Style="{StaticResource generalLabelStyle}"/>
-                    <ComboBox  SelectedItem="{Binding Path=NewEmploye.Gender, Mode=OneWayToSource}" 
-                              ItemsSource="{Binding Source={StaticResource genderEnum}}" />
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="surnameTextBox">
+                        <TextBox.Text>
+                            <Binding Path="NewEmployee.Surname" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    
+                    <Label Content="Gender:" Style="{StaticResource generalLabelStyle}" />
+                    <ComboBox  SelectedItem="{Binding Path=NewEmployee.Gender, Mode=OneWayToSource}" 
+                               ItemsSource="{Binding Source={StaticResource genderEnum}}"/>
+                    
                     <Label Content="Date of Birth:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=NewEmployee.DateOfBirth}" />
+                    <DatePicker SelectedDateChanged="DatePicker_SelectedDateChanged" 
+                                DisplayDateStart="01/01/2010" DisplayDateEnd="01/01/2100"
+                                Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                    </DatePicker>
+
                     <Label Content="Email:" Style="{StaticResource generalLabelStyle}" />
-                    <TextBox Text="{Binding Path=NewEmployee.Email}" />
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="emailTextBox">
+                        <TextBox.Text>
+                            <Binding Path="NewEmployee.Email" UpdateSourceTrigger="LostFocus">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    
                     <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=NewEmployee.HomeAddress}" />
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="homeAddressTextBox">
+                        <TextBox.Text>
+                            <Binding Path="NewEmployee.HomeAddress" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
 
                     <StackPanel Orientation="Horizontal" Background="Wheat">
-                        <Button Content="Save" Click="AddNewEmployee" Width="100" Margin="5, 3, 5, 3"/>
+                        <Button Content="Submit">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=nameTextBox}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=surnameTextBox}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=emailTextBox}" Value="False"/>
+                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=homeAddressTextBox}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="Save" Click="AddNewEmployee" IsEnabled="{Binding SaveButtonEnabled}" Width="100" Margin="5, 3, 5, 3"/>
                         <Button Content="Close" Click="ClosePopup" Width="100" Margin="0, 3, 5, 3"/>
                     </StackPanel>
                 </StackPanel>

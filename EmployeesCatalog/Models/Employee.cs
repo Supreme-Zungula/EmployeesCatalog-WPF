@@ -8,7 +8,7 @@ namespace EmployeesCatalog.Models
     {
         private string _name;
         private string _surname;
-        private string _dateOfBirth;
+        private DateTime _dateOfBirth;
         private GenderEnum _gender;
         private string _homeAddress;
         private string _email;
@@ -50,7 +50,7 @@ namespace EmployeesCatalog.Models
             }
         }
 
-        public string DateOfBirth
+        public DateTime DateOfBirth
         {
             get { return _dateOfBirth; }
             set

@@ -4,16 +4,20 @@ using EmployeesCatalog.Models;
 using EmployeesCatalog.Enums;
 using EmployeesCatalog.UtilityClasses;
 using System.Windows;
+using EmployeesCatalog.Serivices;
 
 namespace EmployeesCatalog.ViewModels
 {
     class EmployeeViewModel
     {
-        
+        private EmployeeRepository _employeesRepository;
         public EmployeeViewModel()
         {
-            LoadEmployees();
+            _employeesRepository = new EmployeeRepository();
+            EmployeesCollection = _employeesRepository.GetEmployees();
             DeleteEmployeeCommand = new CustomICommand(RemoveEmployee, IsItemSelected);
+            CurrentDate = new DateTime().ToString("d");
+            SaveButtonEnabled = false;
         }
 
         public ObservableCollection<Employee> EmployeesCollection
@@ -21,13 +25,17 @@ namespace EmployeesCatalog.ViewModels
             get;
             set;
         }
-
+        public string CurrentDate
+        {
+            set;
+            get;
+        }
         public CustomICommand DeleteEmployeeCommand
         {
             get;
             set;
         }
-
+        public bool SaveButtonEnabled { get; set; }
         public void CommitChanges()
         {
 
@@ -53,8 +61,8 @@ namespace EmployeesCatalog.ViewModels
         }
         public void AddNewEmployee()
         {
-            if (NewEmployee !=  null)
-                EmployeesCollection.Add(NewEmployee);
+            if (NewEmployee != null)
+                _employeesRepository.AddEmployee(NewEmployee);
             NewEmployee = null;
         }
         
@@ -82,39 +90,15 @@ namespace EmployeesCatalog.ViewModels
                     _newEmployee = value;
             }
         }
-   
+
         private bool IsItemSelected()
         {
             return SelectedGridItem != null;
         }
         private void RemoveEmployee()
         {
-            EmployeesCollection.Remove(SelectedGridItem);
-
+            _employeesRepository.DeleteEmployee(SelectedGridItem);
         }
-        private void LoadEmployees()
-        {
-            ObservableCollection<Employee> employees = new ObservableCollection<Employee>()
-            {
-                new Employee { 
-                    Name = "Kraber",Surname = "Sniper", DateOfBirth = "01-01-2000", Email = "user@company.com",
-                    Gender = GenderEnum.Male, HomeAddress = "80 Damage, Headshot road, Insta kill city, 2091"
-                },
-                new Employee {
-                    Name = "Devotion", Surname = "SMG",Gender = GenderEnum.Male, Email = "user@company.com",
-                    DateOfBirth = "01-01-2000", HomeAddress = "80 Damage, Headshot road, Insta kill city, 2091"
-                },
-                new Employee {
-                    Name = "Havoc", Surname = "Energy-SMG", Gender = GenderEnum.Female, Email = "user@company.com",
-                    DateOfBirth = "01-01-2000", HomeAddress = "80 Damage, Headshot road, Insta kill city, 2091"
-                },
-                new Employee {
-                    Name = "Wingman", Surname = "Pistol", Gender = GenderEnum.Female, Email = "user@company.com",
-                    DateOfBirth = "01-01-2000", HomeAddress = "80 Damage, Headshot road, Insta kill city, 2091"
-                }
-            };
-
-            this.EmployeesCollection = employees;
-        }
+   
     }
 }

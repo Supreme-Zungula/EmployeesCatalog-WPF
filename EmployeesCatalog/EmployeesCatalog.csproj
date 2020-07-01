@@ -52,6 +52,9 @@
     <Reference Include="MongoDB.Driver.Core, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Driver.Core.2.10.4\lib\net452\MongoDB.Driver.Core.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Driver.Legacy, Version=2.10.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\mongocsharpdriver.2.10.4\lib\net452\MongoDB.Driver.Legacy.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Libmongocrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Libmongocrypt.1.0.0\lib\net452\MongoDB.Libmongocrypt.dll</HintPath>
     </Reference>
@@ -89,12 +92,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\ValidationRules.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
+    <Compile Include="Serivices\DatabaseSetup.cs" />
+    <Compile Include="Serivices\EmployeeFactory.cs" />
+    <Compile Include="Serivices\EmployeeRepository.cs" />
+    <Compile Include="Serivices\MessageBoxService.cs" />
     <Compile Include="UtilityClasses\CustomICommand.cs" />
     <Compile Include="ViewModels\EmployeeViewModel.cs" />
-    <Compile Include="Views\AddEmployeePopup.xaml.cs">
-      <DependentUpon>AddEmployeePopup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\EditEmployeeDetailsPopup.xaml.cs">
       <DependentUpon>EditEmployeeDetailsPopup.xaml</DependentUpon>
     </Compile>
@@ -114,10 +119,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Styles\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddEmployeePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

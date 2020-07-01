@@ -16,7 +16,6 @@ namespace EmployeesCatalog.Views
 
         private void SaveChanges(object sender, RoutedEventArgs eventArgs)
         {
-            //CommitChanges();
             editRowPopup.IsOpen = false;
         }
 

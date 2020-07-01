@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using EmployeesCatalog.Models;
 using EmployeesCatalog.ViewModels;
+using EmployeesCatalog.Serivices;
 
 namespace EmployeesCatalog.Views
 {
@@ -19,6 +20,7 @@ namespace EmployeesCatalog.Views
             _employeeViewModel = new ViewModels.EmployeeViewModel();
             this.DataContext = _employeeViewModel;
             _employeeViewModel.NewEmployee = new Employee();
+            _employeeViewModel.NewEmployee.DateOfBirth = new DateTime();
         }
 
    
@@ -35,52 +37,38 @@ namespace EmployeesCatalog.Views
                 DataGridRow selectedRow = GetSelectedRow(gridRows);
 
                 if (selectedRow == null) {
-                    MessageBox.Show("Select a row to edit.", "Edit info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBoxService.ShowMessageBox("Select a row to edit.", "Edit info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else {
                     EditEmployeeDetailsPopupControl.editRowPopup.IsOpen = true;
                     EditEmployeeDetailsPopupControl.DataContext = _employeeViewModel;
+                    ClosePopup(sender, eventArgs);
                 }
             }
             catch { }
         }
         private void handleAddEmployee(object sender, RoutedEventArgs eventArgs)
         {
+            //AddEmployeePopupControl.addEmployeePopup.IsOpen = true;
             addEmployeePopup.IsOpen = true;
+            if (EditEmployeeDetailsPopupControl.editRowPopup.IsOpen)
+            {
+                EditEmployeeDetailsPopupControl.editRowPopup.IsOpen = false;
+            }
         }
         private void   AddNewEmployee(object sender, RoutedEventArgs eventArgs)
         {
-            addEmployeePopup.IsOpen = false;
+            //addEmployeePopup.IsOpen = false;
             _employeeViewModel.AddNewEmployee();
-            _employeeViewModel.NewEmployee = null;
+            _employeeViewModel.NewEmployee = new Employee();
+            ClosePopup(sender, eventArgs);
         }
 
-        //private void SaveChanges(object sender, RoutedEventArgs eventArgs)
-        //{
-        //    _employeeViewModel.CommitChanges();
-        //    editRowPopup.IsOpen = false;
-        //}
         private void ClosePopup(object sender, RoutedEventArgs eventArgs)
         {
-            //if (editRowPopup.IsOpen == true)
-            //    editRowPopup.IsOpen = false;
             if (addEmployeePopup.IsOpen == true)
                 addEmployeePopup.IsOpen = false;
         }
-
-        //private void DisplayPopup()
-        //{
-        //    if (editRowPopup.IsOpen == true)
-        //    {
-        //        editRowPopup.IsOpen = false;
-        //        addEmployeePopup.IsOpen = true;
-        //    }
-        //    else if (addEmployeePopup.IsOpen == true)
-        //    {
-        //        addEmployeePopup.IsOpen = false;
-        //        editRowPopup.IsOpen = true;
-        //    }
-        //}
 
         private void SetComboBoxBackground()
         {
@@ -122,5 +110,16 @@ namespace EmployeesCatalog.Views
 
             return null;
         }
+
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var datePicker = sender as DatePicker;
+            var date = datePicker.SelectedDate;
+            if (date != null)
+            {
+                _employeeViewModel.NewEmployee.DateOfBirth = (DateTime)date;
+            }
+        }
+
     }
 }
