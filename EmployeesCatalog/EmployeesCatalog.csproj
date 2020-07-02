@@ -92,7 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Common\ValidationRules.cs" />
+    <Compile Include="Common\RequiredFieldValidationRules.cs" />
     <Compile Include="Enums\GenderEnum.cs" />
     <Compile Include="Serivices\DatabaseSetup.cs" />
     <Compile Include="Serivices\EmployeeFactory.cs" />

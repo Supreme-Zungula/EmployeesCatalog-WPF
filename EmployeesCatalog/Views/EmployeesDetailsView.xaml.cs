@@ -19,7 +19,7 @@ namespace EmployeesCatalog.Views
             InitializeComponent();
             _employeeViewModel = new ViewModels.EmployeeViewModel();
             this.DataContext = _employeeViewModel;
-            _employeeViewModel.NewEmployee = new Employee();
+            //_employeeViewModel.NewEmployee = new Employee();
             _employeeViewModel.NewEmployee.DateOfBirth = new DateTime();
         }
 

@@ -57,7 +57,7 @@
                 <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" />
             </StackPanel>
         </ControlTemplate>
-        <viewModels:EmployeeViewModel x:Key="EmployeeViewModel" />
+        
     </UserControl.Resources>
 
     <Grid ShowGridLines="False">
@@ -101,7 +101,7 @@
                     <Label Content="Name:" Style="{StaticResource generalLabelStyle}" x:Name="nameTextBox"/>
                     <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
                         <TextBox.Text>
-                            <Binding Path="NewEmployee.Name" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
+                            <Binding Path="NewEmployee.Name" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
                                 <Binding.ValidationRules>
                                     <common:RequiredFieldValidationRule ValidatesOnTargetUpdated="True"/>
                                 </Binding.ValidationRules>
@@ -112,7 +112,7 @@
                     <Label Content="Surname:" Style="{StaticResource generalLabelStyle}" />
                     <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="surnameTextBox">
                         <TextBox.Text>
-                            <Binding Path="NewEmployee.Surname" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="NewEmployee.Surname" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <common:RequiredFieldValidationRule />
                                 </Binding.ValidationRules>
@@ -125,7 +125,7 @@
                                ItemsSource="{Binding Source={StaticResource genderEnum}}"/>
                     
                     <Label Content="Date of Birth:" Style="{StaticResource generalLabelStyle}"/>
-                    <DatePicker SelectedDateChanged="DatePicker_SelectedDateChanged" 
+                    <DatePicker SelectedDateChanged="DatePicker_SelectedDateChanged" SelectedDate="{Binding Path=NewEmployee.DateOfBirth, Mode=OneWayToSource}"
                                 DisplayDateStart="01/01/2010" DisplayDateEnd="01/01/2100"
                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
                     </DatePicker>
@@ -133,7 +133,7 @@
                     <Label Content="Email:" Style="{StaticResource generalLabelStyle}" />
                     <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="emailTextBox">
                         <TextBox.Text>
-                            <Binding Path="NewEmployee.Email" UpdateSourceTrigger="LostFocus">
+                            <Binding Path="NewEmployee.Email" Mode="OneWayToSource" UpdateSourceTrigger="LostFocus">
                                 <Binding.ValidationRules>
                                     <common:RequiredFieldValidationRule />
                                 </Binding.ValidationRules>
@@ -144,7 +144,7 @@
                     <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}"/>
                     <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" x:Name="homeAddressTextBox">
                         <TextBox.Text>
-                            <Binding Path="NewEmployee.HomeAddress" UpdateSourceTrigger="PropertyChanged">
+                            <Binding Path="NewEmployee.HomeAddress" Mode="OneWayToSource" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
                                     <common:RequiredFieldValidationRule />
                                 </Binding.ValidationRules>
@@ -153,25 +153,8 @@
                     </TextBox>
 
                     <StackPanel Orientation="Horizontal" Background="Wheat">
-                        <Button Content="Submit">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=nameTextBox}" Value="False"/>
-                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=surnameTextBox}" Value="False"/>
-                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=emailTextBox}" Value="False"/>
-                                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=homeAddressTextBox}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
-                        <Button Content="Save" Click="AddNewEmployee" IsEnabled="{Binding SaveButtonEnabled}" Width="100" Margin="5, 3, 5, 3"/>
+                        
+                        <Button Content="Save" Click="AddNewEmployee"  Width="100" Margin="5, 3, 5, 3"/>
                         <Button Content="Close" Click="ClosePopup" Width="100" Margin="0, 3, 5, 3"/>
                     </StackPanel>
                 </StackPanel>
@@ -179,7 +162,7 @@
         </Popup>
 
         <StackPanel  Grid.Row="1" Orientation="Horizontal">
-            <Button Content="Edit" Click="handleEditEmployees" Style="{StaticResource generalButtonStyle}"/>
+            <Button Content="Edit" Click="handleEditEmployees" IsEnabled="{Binding CanAddNewEmployee}" Style="{StaticResource generalButtonStyle}"/>
             <Button Content="Add" Click="handleAddEmployee" Style="{StaticResource generalButtonStyle}"/>
             <Button Content="Delete" Command="{Binding DeleteEmployeeCommand}" Style="{StaticResource generalButtonStyle}" Background="PaleVioletRed"/>
         </StackPanel>

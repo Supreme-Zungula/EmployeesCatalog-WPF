@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:core="clr-namespace:System;assembly=mscorlib"
              xmlns:enums="clr-namespace:EmployeesCatalog.Enums"
+             xmlns:common="clr-namespace:EmployeesCatalog.Common"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -14,6 +15,13 @@
                 <x:Type TypeName="enums:GenderEnum" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
+        <ControlTemplate x:Key="validationErrorTemplate">
+            <StackPanel>
+                <AdornedElementPlaceholder />
+                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" />
+            </StackPanel>
+        </ControlTemplate>
     </UserControl.Resources>
     
     <Grid>
@@ -21,18 +29,59 @@
             <Border>
                 <StackPanel>
                     <Label Content="Name:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Name}" IsEnabled="{Binding Path=EditingIsEnabled}"/>
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                        <TextBox.Text>
+                            <Binding Path="SelectedGridItem.Name" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    
                     <Label Content="Surname:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Surname}" />
+                    <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                        <TextBox.Text>
+                            <Binding Path="SelectedGridItem.Surname" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <common:RequiredFieldValidationRule />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <!--<TextBox Text="{Binding Path=SelectedGridItem.Surname}" />-->
+                    
                     <Label Content="Gender:" Background="White" Style="{StaticResource generalLabelStyle}"/>
                     <ComboBox ItemsSource="{Binding Source={StaticResource genderEnum}}"
                               SelectedItem="{Binding Path=SelectedGridItem.Gender}"  />
+
                     <Label Content="Date of Birth:" Style="{StaticResource generalLabelStyle}"/>
                     <DatePicker SelectedDate="{Binding Path=SelectedGridItem.DateOfBirth}" />
-                    <Label Content="Email:" Style="{StaticResource generalLabelStyle}"/>
-                    <TextBox Text="{Binding Path=SelectedGridItem.Email}" />
-                    <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}" />
-                    <TextBox Text="{Binding Path=SelectedGridItem.HomeAddress}" />
+
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Email:" Style="{StaticResource generalLabelStyle}" Width="auto"/>
+                        <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <TextBox.Text>
+                                <Binding Path="SelectedGridItem.Email" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <common:RequiredFieldValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Home Address:" Style="{StaticResource generalLabelStyle}" />
+                        <TextBox Validation.ErrorTemplate="{StaticResource validationErrorTemplate}">
+                            <TextBox.Text>
+                                <Binding Path="SelectedGridItem.HomeAddress">
+                                    <Binding.ValidationRules>
+                                        <common:RequiredFieldValidationRule />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Background="Wheat">
                         <Button Content="Save" Click="SaveChanges" Style="{StaticResource generalButtonStyle}"/>

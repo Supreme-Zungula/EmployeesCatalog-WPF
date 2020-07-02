@@ -15,8 +15,8 @@ namespace EmployeesCatalog.ViewModels
         {
             _employeesRepository = new EmployeeRepository();
             EmployeesCollection = _employeesRepository.GetEmployees();
+            NewEmployee = new Employee();
             DeleteEmployeeCommand = new CustomICommand(RemoveEmployee, IsItemSelected);
-            CurrentDate = new DateTime().ToString("d");
             SaveButtonEnabled = false;
         }
 
@@ -25,16 +25,7 @@ namespace EmployeesCatalog.ViewModels
             get;
             set;
         }
-        public string CurrentDate
-        {
-            set;
-            get;
-        }
-        public CustomICommand DeleteEmployeeCommand
-        {
-            get;
-            set;
-        }
+        public CustomICommand DeleteEmployeeCommand { get; set; }
         public bool SaveButtonEnabled { get; set; }
         public void CommitChanges()
         {
